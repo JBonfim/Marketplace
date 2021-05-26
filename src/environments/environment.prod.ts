@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://dev.sitemercado.com.br',
+  baseURL: "https://localhost:44348"
 };

@@ -1,0 +1,28 @@
+
+<br>
+<div *ngIf="isProducts" class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 689.334px;">
+  <div class="col-sm-6 col-lg-4 mb-4" *ngFor="let product of products" >
+    <div class="card">
+      <img  src="{{baseUrl}}/resources/images/{{product.image}}" alt=""
+      class="bd-placeholder-img card-img-top" x="50%" y="50%" fill="#dee2e6" dy=".3em"  role="img"
+      aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"
+        >
+      <div class="card-body">
+        <h5 class="card-title text-center">{{product.name}}</h5>
+        <p class="card-text text-center">R${{product.price}}</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row" id="teste" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 689.334px;"  *ngIf="!isProducts" >
+  <div colspan="7" class="text-center">
+    <h4>
+      Nenhum produto Cadastrado! <button class="btn btn-lg btn-link btn-block" (click)="router.navigate(['/produtos'])">Click aqui para adicionar um Produto</button>
+
+    </h4>
+
+  </div>
+</div>
+
