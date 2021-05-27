@@ -26,45 +26,37 @@ export class AuthService {
     private router: Router,
     private http: HttpClient
   ) {
-      this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-      this.user = this.userSubject.asObservable();
+     // this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+      //this.user = this.userSubject.asObservable();
   }
-  public get userValue(): User {
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-      this.user = this.userSubject.asObservable();
-      return this.userSubject.value;
+  public get userValue(): any {
+    //this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+     //this.user = this.userSubject.asObservable();
+      this.decodedToken = this.jwtHelper.decodeToken(localStorage.getItem('token'));
+      return this.decodedToken;
   }
 
-  login(username: string, password: string) {
-    const httpOptions = {
-
-    };
-
-    const url = `${environment.apiUrl}/api/login`;
-    const body = JSON.stringify({username: username,
-                                 password: password});
-    const headers =  new HttpHeaders({
-      'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-      'Authorization': 'Basic ' + btoa(`${username}:${password}`),
-      'Access-Control-Allow-Origin': '*'
-    })
-
-
-    return this.http.post<any>(url, body, {headers: headers})
-        .pipe(map(user => {
-            // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
-            user.authdata = window.btoa(username + ':' + password);
-            user.userName = username;
-            localStorage.setItem('user', JSON.stringify(user));
-            this.userSubject.next(user);
-            return user;
-        }));
+  login(model: any) {
+    return this.http
+     .post(`${environment.apiUrl}/api/login`, model).pipe(
+       map((response: any) => {
+         const user = response;
+        // console.log(user.userToken)
+         if(user.authenticated) {
+           localStorage.setItem('token', user.accessToken);
+           this.decodedToken = this.jwtHelper.decodeToken(user.accessToken);
+         // console.log(this.decodedToken)
+          return true;
+         }else{
+           return false;
+         }
+       })
+     );
   }
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('user');
-    this.userSubject.next(null);
+    localStorage.removeItem('token');
     this.router.navigate(['/user/login']);
   }
 

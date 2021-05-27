@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
         console.log("falso")
         this.isProducts = false;
       }
-      console.log(this.products);
+      //console.log(this.products);
     }, error => {
       console.log(error);
     });

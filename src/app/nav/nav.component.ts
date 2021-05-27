@@ -19,13 +19,13 @@ export class NavComponent implements OnInit {
   ngOnInit() {
   }
 
-  getInfoUser(){
-    return this.authService.userValue.userName;
+  getUserInfos(){
+    return this.authService.userValue.name;
   }
 
   loggedIn() {
     // direciono para a função loggedIn criado '/_services/auth.service' porque lá ele já realiza a verificação de login
-    return this.authService.userValue;
+    return this.authService.loggedIn();
   }
 
   entrar() {

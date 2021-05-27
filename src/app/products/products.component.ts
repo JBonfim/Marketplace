@@ -33,6 +33,7 @@ export class ProductsComponent implements OnInit {
   error = '';
   loading = false;
   baseUrl = '';
+  isProducts = true;
 
 
 
@@ -114,9 +115,11 @@ export class ProductsComponent implements OnInit {
   }
   onFileChange(event){
     const reader = new FileReader();
+    console.log("xxx")
     if(event.target.files && event.target.files.length){
       this.file = event.target.files;
     }
+    console.log("yyyy")
 
 
 
@@ -185,11 +188,16 @@ export class ProductsComponent implements OnInit {
   }
 
   getProducts() {
+    this.isProducts = true;
     this.productService.getAllProducts().subscribe(
       (_Products: Product[]) => {
       this.products = _Products;
+      if(this.products.length == 0){
+        console.log("falso")
+        this.isProducts = false;
+      }
       this.productsFiltrados = this.products;
-      console.log(this.products);
+      //console.log(this.products);
     }, error => {
       console.log(error);
     });

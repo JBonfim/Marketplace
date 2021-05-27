@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
    });
 
-   if (this.authService.userValue) {
+   if (this.authService.loggedIn()) {
         this.router.navigate(['/dashboard']);
     }
   }
@@ -40,22 +40,28 @@ export class LoginComponent implements OnInit {
 
 
   login(){
+    this.error = '';
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;
     }
+    let userLogin = {
+      username: this.f.username.value,
+      password: this.f.password.value
+  }
+
     this.loading = true;
-    this.authService.login(this.f.username.value,this.f.password.value)
+    this.authService.login(userLogin)
       .subscribe(
         (ret) =>{
           const retorno = ret;
           console.log(retorno);
-          if(retorno.success){
+          if(retorno){
             this.loading = false;
             this.router.navigate(['/dashboard']);
             //this.toastr.success('Login Efetuado!');
           }else{
-            this.error = retorno.error;
+            this.error = 'Erro ao realizar o login';
             this.loading = false;
           }
 
